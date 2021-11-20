@@ -1,14 +1,17 @@
 from flask import jsonify, request
+from src.constants import *
+from datetime import datetime
+from src.services.insertUserDetails import insert_details
 
 
 def save_customer_details():
-    # TODO : Fix import problem
-    name = request.json['name']
-    phone_no = request.json['phoneNo']
-    email = request.json['email']
-    subscription_plan = request.json['subscriptionPlan']
-    hashword = f"{str(phone_no)}{name}"
-    hash_value = abs(hash(hashword))
-    context = {'id': hash_value, 'name': name, 'phoneNo': phone_no, 'email': email,
-               'subscriptionPlan': subscription_plan, 'status': 'success'}
+    name = request.json[USER_NAME]
+    phone_no = request.json[USER_PHONENO]
+    email = request.json[USER_EMAIL]
+    subscription_plan = request.json[USER_SUBPLAN]
+    hash_value = abs(hash(f"{str(phone_no)}{name}"))
+    subscription_date = datetime.now()
+    db_response = insert_details(hash_value, name, phone_no, email, subscription_plan, subscription_date)
+    context = {RESP_ID: hash_value, RESP_NAME: name, RESP_PHONENO: phone_no, RESP_EMAIL: email,
+               RESP_SUBPLAN: subscription_plan, RESP_STATUS: RESP_STATUSVALUE}
     return jsonify(context)

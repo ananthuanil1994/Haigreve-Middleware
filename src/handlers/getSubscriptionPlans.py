@@ -1,9 +1,8 @@
 from flask import jsonify
-from .. import constants
+from src import constants
 
 
 def show_subscription_plans():
-    subscriptionPlans = constants.subscriptionPlans
-    return jsonify(subscriptionPlans)
-
+    subscription_plans = constants.subscriptionPlans
+    return jsonify(subscription_plans)
 
