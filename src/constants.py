@@ -25,6 +25,29 @@ STATUS_FALSE = False
 ROUTES_NAME = "teletalk_routes"
 URL_SUBSCRIPTION_PLANS = "/subscriptionPlans"
 URL_SAVE_CUSTOMER_DETAILS = "/saveCustomerDetails"
+URL_UPDATE_CUSTOMER_DETAILS = "/updateCustomerDetails"
+
+# SMS_DEFAULT_NAME = "User"
+# SMS_DEFAULT_CODE = ""
+#
+# SMS_FORMAT = f"""
+# Hello {SMS_DEFAULT_NAME},
+# Thanks for Subscribing Lookout MES.
+# Please download  & activate the application from the link below:
+# https://get.lookout.com/web-code?code={SMS_DEFAULT_CODE}
+#
+# Thanks,
+# Team Haigreve
+# """
+#
+# REMINDER_SMS_FORMAT = f"""
+# Hello [Name],
+# Your Lookout MES subscription is expiring on DD/MM/YY.
+# To resubscribe please visit [Page Address] .
+#
+# Thanks,
+# Team Haigreve
+# """
 
 # Request methods
 
@@ -34,6 +57,7 @@ POST_METHOD = "POST"
 # Model
 
 TABLE_NAME = "user_details"
+SUB_TABLE_NAME = "subscription_plans"
 
 # SQL alchemy configurations
 
@@ -51,6 +75,11 @@ DB_ISSUBSCRIBED = "isSubscribed"
 DB_SUBSCRIPTIONPLAN = "subscriptionPlan"
 DB_ISPAYMENTCOMPLETED = "isPaymentCompleted"
 DB_SUBSCRIPTIONDATE = "subscriptionDate"
+
+SUB_ID = "id"
+SUB_PLANNAME = "planName"
+SUB_AMOUNT = "amount"
+HASH_WORD = "TeleTalk"
 
 subscriptionPlans = [
     {
