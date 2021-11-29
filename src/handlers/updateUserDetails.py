@@ -1,13 +1,13 @@
 from flask import jsonify, request
 from datetime import datetime
 from src.services.updateUserSubscriptionDetails import update_details
-from src.services.sendMessage import send_SMS_message
-from src.services.smsMessageFormat import activation_sms_message_format
 from src.constants import *
-from src.models.userDetails import Users
+from src.models.user_details import Users
 from src import db
 
 import hashlib
+
+from src.utilities.utils import activation_sms_message_format
 
 
 def update_customer_details():

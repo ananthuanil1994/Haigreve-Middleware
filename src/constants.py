@@ -1,10 +1,11 @@
 # User post data
 
 USER_NAME = "name"
-USER_PHONENO = "phoneNo"
+USER_PHONENO = "phone_number"
 USER_EMAIL = "email"
-USER_SUBPLAN = "subscriptionPlan"
-
+USER_SUBPLAN = "subscription_plan"
+DURATION = "duration_month"
+PAYMENT_STATUS ="payment_status"
 # User post response
 
 RESP_ID = "id"
@@ -79,6 +80,7 @@ DB_SUBSCRIPTIONDATE = "subscriptionDate"
 SUB_ID = "id"
 SUB_PLANNAME = "planName"
 SUB_AMOUNT = "amount"
+SUB_DURATION = "duration_months"
 HASH_WORD = "TeleTalk"
 
 subscriptionPlans = [
@@ -103,3 +105,7 @@ subscriptionPlans = [
         "amount": 960
     }
 ]
+
+# PAYMENT STATUS
+PAYMENT_SUCCESS = 'success'
+PAYMENT_FAILED = 'failed'

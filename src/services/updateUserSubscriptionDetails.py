@@ -1,4 +1,4 @@
-from src.models.userDetails import Users
+from src.models.user_details import Users
 from src import db
 from src.constants import *
 from datetime import datetime
