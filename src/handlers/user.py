@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 import hashlib
 
-from src.utilities.utils import activation_sms_message_format, send_sms_message
+from src.utilities.utils import activation_sms_message_format, send_sms_message, get_activation_code
 
 
 def save_customer_details():
@@ -42,12 +42,11 @@ def save_customer_details():
         db_response = add_user(data)
         context = {'id': hash_value, 'name': name, 'phone_number': phone_number, 'email': email,
                    'subscription_plan': subscription_plan, 'payment_status': payment_status}
-        # if db_response and is_payment_completed:
-        #     code = None  # need too write a function read and update csv file containing activation code.
-        #     message = activation_sms_message_format(name, code)
-        #     msg_status = send_sms_message(phone_number, message)
-        #     pass
-
+        if db_response and is_payment_completed:
+            code = get_activation_code()
+            if code:
+                message = activation_sms_message_format(name, code)
+                msg_status = send_sms_message(phone_number, message)
         return jsonify(context)
     except Exception as e:
         print(e.__str__())
