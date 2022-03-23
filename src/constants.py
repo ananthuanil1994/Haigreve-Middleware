@@ -27,6 +27,8 @@ ROUTES_NAME = "teletalk_routes"
 URL_SUBSCRIPTION_PLANS = "/subscriptionPlans"
 URL_SAVE_CUSTOMER_DETAILS = "/saveCustomerDetails"
 URL_UPDATE_CUSTOMER_DETAILS = "/updateCustomerDetails"
+URL_CONFIRM_SUBSCRIPTION = '/confirmSubscription'
+URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
 
 # SMS_DEFAULT_NAME = "User"
 # SMS_DEFAULT_CODE = ""
@@ -82,6 +84,12 @@ SUB_PLANNAME = "planName"
 SUB_AMOUNT = "amount"
 SUB_DURATION = "duration_months"
 HASH_WORD = "TeleTalk"
+SUB_CLIENT_ID = 'haigreve'
+SUB_PRODUCT_ID = 'HAIGREVE_MOBILE_SECURITY_MS4'
+SUB_SERVICE_ID = 'START MSW'
+SUB_TYPE = 'subscription'
+SUB_SERVICE_NAME = 'START MSW'
+SUB_CHANNEL_NAME = 'CP'
 
 subscriptionPlans = [
     {
