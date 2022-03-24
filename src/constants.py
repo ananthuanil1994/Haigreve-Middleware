@@ -27,6 +27,8 @@ ROUTES_NAME = "teletalk_routes"
 URL_SUBSCRIPTION_PLANS = "/subscriptionPlans"
 URL_SAVE_CUSTOMER_DETAILS = "/saveCustomerDetails"
 URL_UPDATE_CUSTOMER_DETAILS = "/updateCustomerDetails"
+URL_CONFIRM_SUBSCRIPTION = '/confirmSubscription'
+URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
 
 # SMS_DEFAULT_NAME = "User"
 # SMS_DEFAULT_CODE = ""
@@ -58,7 +60,12 @@ POST_METHOD = "POST"
 # Model
 
 TABLE_NAME = "user_details"
+USER_FOREIGN_KEY = 'user_details.mobile_number'
+TXN_MODEL_NAME = 'Transactions'
 SUB_TABLE_NAME = "subscription_plans"
+TXN_TABLE_NAME = "transaction_details"
+TXN_ID = 'transaction_id'
+MOBILE_NUMBER = 'mobile_number'
 
 # SQL alchemy configurations
 
@@ -82,6 +89,22 @@ SUB_PLANNAME = "planName"
 SUB_AMOUNT = "amount"
 SUB_DURATION = "duration_months"
 HASH_WORD = "TeleTalk"
+CLIENT_ID = 'client_id'
+TRANSACTION_ID = 'transaction_id'
+SUB_MOBILE_NUMBER = 'mobileno'
+PRODUCT_ID = 'product_id'
+SERVICE_ID = 'service_id'
+TYPE = 'type'
+SERVICE_NAME = 'service_name'
+CHANNEL_NAME = 'channel_name'
+SUB_CLIENT_ID = 'haigreve'
+SUB_PRODUCT_ID = 'HAIGREVE_MOBILE_SECURITY_MS4'
+SUB_SERVICE_ID = 'START MSW'
+SUB_TYPE = 'subscription'
+SUB_SERVICE_NAME = 'START MSW'
+SUB_CHANNEL_NAME = 'CP'
+SUB_PAGE_URL = 'http://202.74.240.171:8086/teletalk_sdp_sub_activete.aspx'
+CHECK_SUB_URL = 'http://202.74.240.169:8064/sub_status.aspx'
 
 subscriptionPlans = [
     {
