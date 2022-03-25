@@ -5,6 +5,7 @@ from src.handlers.subscription_handler import check_subscription_status, get_con
 from src import app
 from flask import Blueprint
 from src.constants import *
+from src.handlers.zimperium_handler import zimperium_login, get_default_group_id
 
 teletalk_routes = Blueprint(ROUTES_NAME, __name__)
 
@@ -26,4 +27,8 @@ app.add_url_rule(URL_CONFIRM_SUBSCRIPTION,
 
 app.add_url_rule(URL_CHECK_SUBSCRIPTION_STATUS,
                  view_func=check_subscription_status,
+                 methods=[GET_METHOD])
+
+app.add_url_rule('/zimperiumLogin',
+                 view_func=get_default_group_id,
                  methods=[GET_METHOD])

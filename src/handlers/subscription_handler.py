@@ -34,7 +34,7 @@ def check_subscription_status():
         mobile_no = request.json[USER_PHONENO]
         url = f'{CHECK_SUB_URL}?{CLIENT_ID}={SUB_CLIENT_ID}&{SERVICE_ID}={SUB_SERVICE_ID}&{SUB_MOBILE_NUMBER}=' \
               f'{mobile_no}&{CHANNEL_NAME}={SUB_CHANNEL_NAME}'
-        result = (str(requests.get(url).content).split('b', 1)[1]).replace("'", '')
+        result = requests.get(url).content.decode('utf-8')
         return jsonify({"subscription_status": result})
     except Exception as e:
         print(e.__str__())
