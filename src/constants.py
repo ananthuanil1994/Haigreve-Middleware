@@ -1,11 +1,13 @@
 # User post data
 
 USER_NAME = "name"
+USER_FIRST_NAME = 'first_name'
+USER_LAST_NAME = 'last_name'
 USER_PHONENO = "phone_number"
 USER_EMAIL = "email"
 USER_SUBPLAN = "subscription_plan"
 DURATION = "duration_month"
-PAYMENT_STATUS ="payment_status"
+PAYMENT_STATUS = "payment_status"
 # User post response
 
 RESP_ID = "id"
