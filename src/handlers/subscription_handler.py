@@ -6,11 +6,14 @@ from src import db
 from src.models.transaction_details import Transactions
 from src.constants import USER_PHONENO, SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYPE, SUB_SERVICE_NAME, \
     SUB_CHANNEL_NAME, SUB_PAGE_URL, CLIENT_ID, TRANSACTION_ID, SUB_MOBILE_NUMBER, PRODUCT_ID, SERVICE_ID, CHANNEL_NAME, \
-    SERVICE_NAME, TYPE, CHECK_SUB_URL
+    SERVICE_NAME, TYPE, CHECK_SUB_URL, USER_EMAIL, USER_FIRST_NAME, USER_LAST_NAME
 
 
 def get_confirm_subscription_url():
     try:
+        first_name = request.json[USER_FIRST_NAME]
+        last_name = request.json[USER_LAST_NAME]
+        email = request.json[USER_EMAIL]
         mobile_no = request.json[USER_PHONENO]
         transaction_id = uuid.uuid1()
         transaction_date = datetime.utcnow()
