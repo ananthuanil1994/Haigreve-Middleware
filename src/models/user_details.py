@@ -7,7 +7,8 @@ from sqlalchemy.dialects.mysql import BIGINT
 class Users(db.Model):
     __tablename__ = TABLE_NAME
     id = db.Column(db.String(50), primary_key=STATUS_TRUE)
-    name = db.Column(db.String(50), nullable=STATUS_FALSE)
+    first_name = db.Column(db.String(50), nullable=STATUS_FALSE)
+    last_name = db.Column(db.String(50), nullable=STATUS_FALSE)
     mobile_number = db.Column(db.String(20), unique=STATUS_TRUE, nullable=STATUS_FALSE)
     email = db.Column(db.String(20), nullable=STATUS_FALSE)
     is_subscribed = db.Column(db.Boolean, server_default=expression.false(), nullable=STATUS_FALSE)

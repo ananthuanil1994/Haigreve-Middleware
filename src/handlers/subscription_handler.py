@@ -1,4 +1,4 @@
-import uuid
+import hashlib
 from datetime import datetime
 import requests
 from flask import jsonify, request
@@ -7,15 +7,13 @@ from src.models.transaction_details import Transactions
 from src.constants import USER_PHONENO, SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYPE, SUB_SERVICE_NAME, \
     SUB_CHANNEL_NAME, SUB_PAGE_URL, CLIENT_ID, TRANSACTION_ID, SUB_MOBILE_NUMBER, PRODUCT_ID, SERVICE_ID, CHANNEL_NAME, \
     SERVICE_NAME, TYPE, CHECK_SUB_URL, USER_EMAIL, USER_FIRST_NAME, USER_LAST_NAME
+from src.utilities.utils import get_user_details
 
 
 def get_confirm_subscription_url():
     try:
-        first_name = request.json[USER_FIRST_NAME]
-        last_name = request.json[USER_LAST_NAME]
-        email = request.json[USER_EMAIL]
-        mobile_no = request.json[USER_PHONENO]
-        transaction_id = uuid.uuid1()
+        first_name, last_name, email, mobile_no = get_user_details()
+        transaction_id = hashlib.md5(mobile_no.encode('utf-8')).hexdigest()
         transaction_date = datetime.utcnow()
         transaction = Transactions(transaction_id=transaction_id, mobile_number=mobile_no,
                                    transaction_date=transaction_date)

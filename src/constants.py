@@ -31,8 +31,10 @@ URL_SAVE_CUSTOMER_DETAILS = "/saveCustomerDetails"
 URL_UPDATE_CUSTOMER_DETAILS = "/updateCustomerDetails"
 URL_CONFIRM_SUBSCRIPTION = '/confirmSubscription'
 URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
+URL_ACTIVATE_USER_SUBSCRIPTION = '/activateSubscription'
 
-# SMS_DEFAULT_NAME = "User"
+SMS_LINK = "http://202.74.240.169/sending_sms_win/Default.aspx?login_name=haigreve&mobileno="
+SMS_MESSAGE = 'msg'
 # SMS_DEFAULT_CODE = ""
 #
 # SMS_FORMAT = f"""
@@ -148,5 +150,9 @@ CONTENT_TYPE = "Content-Type"
 APPLICATION = "application/json"
 ZIMPERIUM_LOGIN_API = "/api/auth/v1/api_keys/login"
 ZIMPERIUM_GROUP_API = '/api/mtd-policy/public/v1/groups/'
+ZIMPERIUM_ACTIVATION_API = "/api/zapp/public/v1/user-activations"
 TOKEN_TABLE_NAME = 'zimperium_tokens'
+ZIMPERIUM_ACTIVATION_LIMIT = 2
+ACTIVATION_LINK_API = '/api/acceptor/v1/user-activation/activation?stoken='
+
 
