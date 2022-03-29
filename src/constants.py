@@ -140,10 +140,6 @@ PAYMENT_FAILED = 'failed'
 
 # ZIMPERIUM
 ZIMPERIUM_HOST = 'https://ziap.zimperium.com'
-ZIMPERIUM_LOGIN_PAYLOAD = {
-    "clientId": "LSgIhiThTSiRl3OGaKp17Q",
-    "secret": "b723df53cfa9002530666bedf4b8e9f6a0ea263c366f44ea7d4710f090030635"
-}
 LOGIN_HEADER = {"Content-Type": "application/json"}
 BEARER = 'Bearer'
 AUTHORIZATION = 'Authorization'

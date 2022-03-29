@@ -5,7 +5,9 @@ import requests
 from dateutil.relativedelta import relativedelta
 from flask import jsonify
 import jwt, time
-from src import ZIMPERIUM_HOST, ZIMPERIUM_LOGIN_API, ZIMPERIUM_LOGIN_PAYLOAD, db, ZIMPERIUM_GROUP_API, BEARER, \
+
+from config import ZIMPERIUM_LOGIN_PAYLOAD
+from src import ZIMPERIUM_HOST, ZIMPERIUM_LOGIN_API, db, ZIMPERIUM_GROUP_API, BEARER, \
     LOGIN_HEADER, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
     ZIMPERIUM_ACTIVATION_LIMIT, STATUS_TRUE, PLAN_VALUE
 from src.models.token_details import Tokens
