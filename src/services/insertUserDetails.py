@@ -9,6 +9,6 @@ def add_user(data):
                          subscription_date=data['subscription_date'], expiration_date=data['expiration_date'],
                          group_id=data['group_id'], activation_id=data['activation_id'], short_token=data['short_token']
                          )
-    db.session.add(user_details)
+    db.session.merge(user_details)
     db.session.commit()
     return True

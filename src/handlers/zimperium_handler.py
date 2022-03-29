@@ -4,24 +4,36 @@ from datetime import datetime
 import requests
 from dateutil.relativedelta import relativedelta
 from flask import jsonify
+import jwt, time
 from src import ZIMPERIUM_HOST, ZIMPERIUM_LOGIN_API, ZIMPERIUM_LOGIN_PAYLOAD, db, ZIMPERIUM_GROUP_API, BEARER, \
-    LOGIN_HEADER, AUTHORIZATION, CONTENT_TYPE, APPLICATION, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_PHONENO, \
-    STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, ZIMPERIUM_ACTIVATION_LIMIT, STATUS_TRUE
+    LOGIN_HEADER, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
+    ZIMPERIUM_ACTIVATION_LIMIT, STATUS_TRUE, PLAN_VALUE
 from src.models.token_details import Tokens
 from src.services.insertUserDetails import add_user
 from src.utilities.utils import get_zimperium_code, activation_sms_message_format, send_sms_message, get_user_details
 
 
 def zimperium_login():
+
     url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_LOGIN_API}'
-    response = requests.post(url, json=ZIMPERIUM_LOGIN_PAYLOAD, headers=LOGIN_HEADER)
-    response = json.loads(response.content.decode("utf-8"))
-    access_token = response['accessToken']
-    refresh_token = response['refreshToken']
-    transaction = Tokens(access_token=access_token, refresh_token=refresh_token)
-    db.session.add(transaction)
-    db.session.commit()
-    return access_token
+    obj = Tokens.query.order_by(-Tokens.id).first()
+    token = obj.access_token
+    decoded = jwt.decode(token, options={"verify_signature": STATUS_FALSE})
+
+    if decoded['exp'] < time.time():
+        response = requests.post(url, json=ZIMPERIUM_LOGIN_PAYLOAD, headers=LOGIN_HEADER)
+        response = json.loads(response.content.decode("utf-8"))
+
+        if response:
+            access_token = response['accessToken']
+            refresh_token = response['refreshToken']
+            transaction = Tokens(access_token=access_token, refresh_token=refresh_token)
+            db.session.add(transaction)
+            db.session.commit()
+        else:
+            return False
+        return access_token
+    return token
 
 
 def get_default_group_id():
@@ -63,7 +75,7 @@ def activate_zimperium_user():
     response = json.loads(response.content.decode("utf-8"))
     if response.get('message', None):
         return response['message']
-    subscription_plan = 1
+    subscription_plan = PLAN_VALUE
     hash_value = hashlib.md5(mobile_no.encode('utf-8')).hexdigest()
     subscription_date = datetime.utcnow()
     expiration_date = subscription_date + relativedelta(months=int(subscription_plan))

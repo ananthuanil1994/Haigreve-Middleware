@@ -23,12 +23,12 @@ app.add_url_rule(URL_UPDATE_CUSTOMER_DETAILS,
 
 app.add_url_rule(URL_CONFIRM_SUBSCRIPTION,
                  view_func=get_confirm_subscription_url,
-                 methods=[GET_METHOD])
+                 methods=[POST_METHOD])
 
 app.add_url_rule(URL_CHECK_SUBSCRIPTION_STATUS,
                  view_func=check_subscription_status,
-                 methods=[GET_METHOD])
+                 methods=[POST_METHOD])
 
 app.add_url_rule(URL_ACTIVATE_USER_SUBSCRIPTION,
                  view_func=activate_zimperium_user,
-                 methods=[GET_METHOD])
+                 methods=[POST_METHOD])

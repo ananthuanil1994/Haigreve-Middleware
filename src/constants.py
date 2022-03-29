@@ -109,6 +109,7 @@ SUB_SERVICE_NAME = 'START MSW'
 SUB_CHANNEL_NAME = 'CP'
 SUB_PAGE_URL = 'http://202.74.240.171:8086/teletalk_sdp_sub_activete.aspx'
 CHECK_SUB_URL = 'http://202.74.240.169:8064/sub_status.aspx'
+PLAN_VALUE = 1
 
 subscriptionPlans = [
     {
