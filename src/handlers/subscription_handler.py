@@ -1,3 +1,4 @@
+import hashlib
 import uuid
 from datetime import datetime
 import requests
@@ -6,15 +7,13 @@ from src import db
 from src.models.transaction_details import Transactions
 from src.constants import USER_PHONENO, SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYPE, SUB_SERVICE_NAME, \
     SUB_CHANNEL_NAME, SUB_PAGE_URL, CLIENT_ID, TRANSACTION_ID, SUB_MOBILE_NUMBER, PRODUCT_ID, SERVICE_ID, CHANNEL_NAME, \
-    SERVICE_NAME, TYPE, CHECK_SUB_URL, USER_EMAIL, USER_FIRST_NAME, USER_LAST_NAME
+    SERVICE_NAME, TYPE, CHECK_SUB_URL
+from src.utilities.utils import get_user_details
 
 
 def get_confirm_subscription_url():
     try:
-        first_name = request.json[USER_FIRST_NAME]
-        last_name = request.json[USER_LAST_NAME]
-        email = request.json[USER_EMAIL]
-        mobile_no = request.json[USER_PHONENO]
+        first_name, last_name, email, mobile_no = get_user_details()
         transaction_id = uuid.uuid1()
         transaction_date = datetime.utcnow()
         transaction = Transactions(transaction_id=transaction_id, mobile_number=mobile_no,
@@ -34,7 +33,7 @@ def check_subscription_status():
         mobile_no = request.json[USER_PHONENO]
         url = f'{CHECK_SUB_URL}?{CLIENT_ID}={SUB_CLIENT_ID}&{SERVICE_ID}={SUB_SERVICE_ID}&{SUB_MOBILE_NUMBER}=' \
               f'{mobile_no}&{CHANNEL_NAME}={SUB_CHANNEL_NAME}'
-        result = (str(requests.get(url).content).split('b', 1)[1]).replace("'", '')
+        result = requests.get(url).content.decode('utf-8')
         return jsonify({"subscription_status": result})
     except Exception as e:
         print(e.__str__())
