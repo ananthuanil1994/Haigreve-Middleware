@@ -152,4 +152,16 @@ TOKEN_TABLE_NAME = 'zimperium_tokens'
 ZIMPERIUM_ACTIVATION_LIMIT = 2
 ACTIVATION_LINK_API = '/api/acceptor/v1/user-activation/activation?stoken='
 
-
+DECODED_INITIAL = {}
+ACCESS_TOKEN = 'access_token'
+NONE = None
+VERIFY_SIGNATURE = 'verify_signature'
+TOKEN_EXPIRY = 'exp'
+UTF8 = 'utf-8'
+ZIMPERIUM_ACCESS_TOKEN = 'accessToken'
+ZIMPERIUM_REFRESH_TOKEN = 'refreshToken'
+MESSAGE = 'message'
+GRP_ID = 'groupId'
+SHORT_TOKEN = 'shortToken'
+VALUE_ZERO = 0
+MESSAGE_STATUS = 'message_status'
