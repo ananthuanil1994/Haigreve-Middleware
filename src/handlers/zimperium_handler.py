@@ -1,21 +1,24 @@
+import hashlib
 import json
 import requests
-from flask import jsonify
+from flask import jsonify, request
 import jwt
 import time
 from config import ZIMPERIUM_LOGIN_PAYLOAD
 from src import ZIMPERIUM_HOST, ZIMPERIUM_LOGIN_API, db, ZIMPERIUM_GROUP_API, BEARER, \
     LOGIN_HEADER, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
-    ZIMPERIUM_ACTIVATION_LIMIT, PLAN_VALUE, DECODED_INITIAL, ACCESS_TOKEN, NONE, VERIFY_SIGNATURE, \
+    ZIMPERIUM_ACTIVATION_LIMIT, DECODED_INITIAL, ACCESS_TOKEN, NONE, VERIFY_SIGNATURE, \
     TOKEN_EXPIRY, UTF8, ZIMPERIUM_ACCESS_TOKEN, ZIMPERIUM_REFRESH_TOKEN, RESP_STATUS, SUB_ID, MESSAGE, GRP_ID, \
-    SHORT_TOKEN, VALUE_ZERO, PAYMENT_SUCCESS, MESSAGE_STATUS, PAYMENT_FAILED
-from src.handlers.user import save_customer_details
+    SHORT_TOKEN, VALUE_ZERO, PAYMENT_SUCCESS, MESSAGE_STATUS, USER_PHONENO, ERROR_RESPONSE, \
+    USER_SUBSCRIBED, USER_NOT_SUBSCRIBED
+from src.handlers.subscription_handler import check_subscription_status
 from src.models.token_details import Tokens
-from src.utilities.utils import activation_sms_message_format, send_sms_message, get_user_details
+from src.models.user_details import Users
+from src.services.updateUserSubscriptionDetails import update_details
+from src.utilities.utils import get_activation_link
 
 
 def zimperium_login():
-
     url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_LOGIN_API}'
     obj = Tokens.query.order_by(-Tokens.id).first()
     decoded = DECODED_INITIAL
@@ -57,40 +60,45 @@ def get_default_group_id():
 
 def activate_zimperium_user():
     group_id, access_token = get_default_group_id()
-    first_name, last_name, email, mobile_no = get_user_details()
-    payload = {
-        "email": email,
-        "firstName": first_name,
-        "lastName": last_name,
-        "phoneNumber": mobile_no,
-        "sendEmailInvite": STATUS_FALSE,
-        "activationLimit": ZIMPERIUM_ACTIVATION_LIMIT,
-        "groupId": group_id
-    }
-    payload = json.dumps(payload)
-    url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_ACTIVATION_API}'
-    headers = {
-        CONTENT_TYPE: APPLICATION,
-        AUTHORIZATION: access_token
-    }
+    mobile_no = request.json[USER_PHONENO]
+    result = check_subscription_status(mobile_no)
+    if result == USER_SUBSCRIBED:
+        hash_value = hashlib.md5(mobile_no.encode(UTF8)).hexdigest()
+        user_details = Users.query.get(hash_value)
+        if user_details:
+            first_name = user_details.first_name
+            last_name = user_details.last_name
+            email = user_details.email
+        else:
+            return jsonify({MESSAGE: USER_NOT_SUBSCRIBED})
+        payload = {
+            "email": email,
+            "firstName": first_name,
+            "lastName": last_name,
+            "phoneNumber": mobile_no,
+            "sendEmailInvite": STATUS_FALSE,
+            "activationLimit": ZIMPERIUM_ACTIVATION_LIMIT,
+            "groupId": group_id
+        }
+        payload = json.dumps(payload)
+        url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_ACTIVATION_API}'
+        headers = {
+            CONTENT_TYPE: APPLICATION,
+            AUTHORIZATION: access_token
+        }
 
-    response = requests.post(url, data=payload, headers=headers)
-    response = json.loads(response.content.decode(UTF8))
+        response = requests.post(url, data=payload, headers=headers)
+        response = json.loads(response.content.decode(UTF8))
 
-    if response.get(MESSAGE, NONE):
-        return response[MESSAGE]
-    subscription_plan = PLAN_VALUE
-    group_id = response[GRP_ID]
-    activation_id = response[SUB_ID]
-    short_token = response[SHORT_TOKEN]
-    payment_status = PAYMENT_SUCCESS
-
-    db_response = save_customer_details(first_name, last_name, mobile_no, email, payment_status, subscription_plan,
-                                        group_id, activation_id, short_token)
-    if db_response:
-        if short_token:
-            message = activation_sms_message_format(first_name, short_token)
-            msg_status = send_sms_message(mobile_no, message)
-    return jsonify({MESSAGE_STATUS: PAYMENT_SUCCESS})
-
-
+        if response.get(MESSAGE, NONE):
+            return response[MESSAGE]
+        user_details.group_id = response[GRP_ID]
+        user_details.activation_id = response[SUB_ID]
+        user_details.short_token = response[SHORT_TOKEN]
+        user_details.payment_status = PAYMENT_SUCCESS
+        result = update_details(user_details)
+        url = ERROR_RESPONSE
+        if user_details.short_token and result:
+            url = get_activation_link(user_details.short_token)
+        return jsonify({MESSAGE_STATUS: url})
+    return jsonify({MESSAGE: USER_NOT_SUBSCRIBED})
