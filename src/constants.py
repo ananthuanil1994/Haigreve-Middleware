@@ -169,3 +169,4 @@ DEFAULT_USER_TYPE = "WEB"
 ERROR_RESPONSE = 'database or API error'
 USER_NOT_SUBSCRIBED = 'The user is not subscribed'
 USER_SUBSCRIBED = 'subscribed'
+URL = 'url'
