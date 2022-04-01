@@ -9,8 +9,7 @@ from src import ZIMPERIUM_HOST, ZIMPERIUM_LOGIN_API, db, ZIMPERIUM_GROUP_API, BE
     LOGIN_HEADER, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
     ZIMPERIUM_ACTIVATION_LIMIT, DECODED_INITIAL, ACCESS_TOKEN, NONE, VERIFY_SIGNATURE, \
     TOKEN_EXPIRY, UTF8, ZIMPERIUM_ACCESS_TOKEN, ZIMPERIUM_REFRESH_TOKEN, RESP_STATUS, SUB_ID, MESSAGE, GRP_ID, \
-    SHORT_TOKEN, VALUE_ZERO, PAYMENT_SUCCESS, MESSAGE_STATUS, USER_PHONENO, ERROR_RESPONSE, \
-    USER_SUBSCRIBED, USER_NOT_SUBSCRIBED
+    SHORT_TOKEN, VALUE_ZERO, PAYMENT_SUCCESS, USER_PHONENO, ERROR_RESPONSE, USER_SUBSCRIBED, USER_NOT_SUBSCRIBED, URL
 from src.handlers.subscription_handler import check_subscription_status
 from src.models.token_details import Tokens
 from src.models.user_details import Users
@@ -91,7 +90,9 @@ def activate_zimperium_user():
         response = json.loads(response.content.decode(UTF8))
 
         if response.get(MESSAGE, NONE):
-            return response[MESSAGE]
+            url = get_activation_link(user_details.short_token)
+            return jsonify({URL: url})
+
         user_details.group_id = response[GRP_ID]
         user_details.activation_id = response[SUB_ID]
         user_details.short_token = response[SHORT_TOKEN]
@@ -100,5 +101,5 @@ def activate_zimperium_user():
         url = ERROR_RESPONSE
         if user_details.short_token and result:
             url = get_activation_link(user_details.short_token)
-        return jsonify({MESSAGE_STATUS: url})
-    return jsonify({MESSAGE: USER_NOT_SUBSCRIBED})
+        return jsonify({URL: url})
+    return jsonify({URL: NONE})
