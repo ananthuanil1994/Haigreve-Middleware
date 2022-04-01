@@ -165,3 +165,7 @@ GRP_ID = 'groupId'
 SHORT_TOKEN = 'shortToken'
 VALUE_ZERO = 0
 MESSAGE_STATUS = 'message_status'
+DEFAULT_USER_TYPE = "WEB"
+ERROR_RESPONSE = 'database or API error'
+USER_NOT_SUBSCRIBED = 'The user is not subscribed'
+USER_SUBSCRIBED = 'subscribed'

@@ -1,26 +1,24 @@
-from src.models.user_details import Users
-from src import db
-from src.constants import *
+from src import db, STATUS_TRUE
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from flask import jsonify
 
 
-def update_details(userdetails):
+def update_details(user_details):
     try:
-        userdetails.isSubscribed = True
-        userdetails.isPaymentCompleted = True
-        userdetails.subscriptionDate = datetime.utcnow()
-        if userdetails.subscriptionPlan == 1:
-            userdetails.expirationDate = datetime.utcnow() + relativedelta(months=+1)
-        elif userdetails.subscriptionPlan == 2:
-            userdetails.expirationDate = datetime.utcnow() + relativedelta(months=+3)
-        elif userdetails.subscriptionPlan == 3:
-            userdetails.expirationDate = datetime.utcnow() + relativedelta(months=+6)
-        elif userdetails.subscriptionPlan == 4:
-            userdetails.expirationDate = datetime.utcnow() + relativedelta(years=+1)
+
+        user_details.is_subscribed = STATUS_TRUE
+        user_details.is_payment_completed = STATUS_TRUE
+        user_details.subscription_date = datetime.utcnow()
+        if user_details.subscription_plan == 1:
+            user_details.expiration_date = datetime.utcnow() + relativedelta(months=+1)
+        elif user_details.subscription_plan == 2:
+            user_details.expiration_date = datetime.utcnow() + relativedelta(months=+3)
+        elif user_details.subscription_plan == 3:
+            user_details.expiration_date = datetime.utcnow() + relativedelta(months=+6)
+        elif user_details.subscription_plan == 4:
+            user_details.expiration_date = datetime.utcnow() + relativedelta(years=+1)
         else:
-            userdetails.expirationDate = datetime.utcnow()
+            user_details.expiration_date = datetime.utcnow()
         db.session.commit()
         status = True
     except Exception as e:

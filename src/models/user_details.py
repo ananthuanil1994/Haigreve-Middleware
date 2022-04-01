@@ -1,7 +1,6 @@
 from sqlalchemy.sql import expression
 from src import db
 from src.constants import *
-from sqlalchemy.dialects.mysql import BIGINT
 
 
 class Users(db.Model):
@@ -19,7 +18,7 @@ class Users(db.Model):
     group_id = db.Column(db.String(50), nullable=STATUS_TRUE)
     activation_id = db.Column(db.String(50), nullable=STATUS_TRUE)
     short_token = db.Column(db.String(50), nullable=STATUS_TRUE)
-    # subscription_plan = db.Column(db.Integer, db.ForeignKey('subscriptions.id'))
+    type = db.Column(db.String(50), default=DEFAULT_USER_TYPE)
 
 
 db.create_all()

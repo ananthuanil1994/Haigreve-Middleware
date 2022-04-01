@@ -19,16 +19,22 @@ def get_user_details():
 
 
 def activation_sms_message_format(name, code):
+    link = get_activation_link(code)
     text_message = f"""
     Hello {name},
     Thanks for Subscribing Lookout MES.
     Please download  & activate the application from the link below:
-    {ZIMPERIUM_HOST}{ACTIVATION_LINK_API}{code}
+    {link}
 
     Thanks,
     Team Haigreve
     """
     return text_message
+
+
+def get_activation_link(code):
+    url = f'{ZIMPERIUM_HOST}{ACTIVATION_LINK_API}{code}'
+    return url
 
 
 def renewal_sms_message_format(name, url):
