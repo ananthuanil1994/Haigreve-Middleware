@@ -32,6 +32,7 @@ URL_UPDATE_CUSTOMER_DETAILS = "/updateCustomerDetails"
 URL_CONFIRM_SUBSCRIPTION = '/confirmSubscription'
 URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
 URL_ACTIVATE_USER_SUBSCRIPTION = '/activateSubscription'
+URL_REDIRECTION_LINK = '/redirectionLink'
 
 SMS_LINK = "http://202.74.240.169/sending_sms_win/Default.aspx?login_name=haigreve&mobileno="
 SMS_MESSAGE = 'msg'
@@ -169,4 +170,7 @@ DEFAULT_USER_TYPE = "WEB"
 ERROR_RESPONSE = 'database or API error'
 USER_NOT_SUBSCRIBED = 'The user is not subscribed'
 USER_SUBSCRIBED = 'subscribed'
+ALREADY_SUBSCRIBED = 'user is already subscribed'
 URL = 'url'
+REDIRECTION_URL = 'bd.haigreve.com/activation?phone='
+

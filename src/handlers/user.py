@@ -1,8 +1,8 @@
 from flask import jsonify, request
 from src.constants import *
 from datetime import datetime
+from src.models.user_details import Users
 from src.services.insertUserDetails import add_user
-from dateutil.relativedelta import relativedelta
 import hashlib
 
 
@@ -13,19 +13,19 @@ def save_customer_details():
         email = request.json[USER_EMAIL]
         phone_number = request.json[USER_PHONENO]
         subscription_plan = request.json[USER_SUBPLAN]
-        payment_status = request.json[PAYMENT_STATUS]
         hash_value = hashlib.md5(phone_number.encode(UTF8)).hexdigest()
-        subscription_date = datetime.utcnow()
-        expiration_date = datetime.utcnow()
-        is_subscribed = STATUS_FALSE
-        is_payment_completed = STATUS_FALSE
-        group_id = STATUS_FALSE
-        activation_id = STATUS_FALSE
-        short_token = STATUS_FALSE
-        if payment_status == PAYMENT_SUCCESS:
-            expiration_date = subscription_date + relativedelta(months=int(subscription_plan))
-            is_subscribed = STATUS_TRUE
-            is_payment_completed = STATUS_TRUE
+        user_details = Users.query.get(hash_value)
+
+        if not user_details:
+            subscription_date = datetime.utcnow()
+            expiration_date = datetime.utcnow()
+            is_subscribed = STATUS_FALSE
+            is_payment_completed = STATUS_FALSE
+            group_id = STATUS_FALSE
+            activation_id = STATUS_FALSE
+            short_token = STATUS_FALSE
+        else:
+            return jsonify({MESSAGE: ALREADY_SUBSCRIBED})
 
         data = {
             'hash_value': hash_value,
@@ -46,7 +46,7 @@ def save_customer_details():
 
         db_response = add_user(data)
         context = {'id': hash_value, 'name': first_name, 'phone_number': phone_number, 'email': email,
-                   'subscription_plan': subscription_plan, 'payment_status': payment_status}
+                   'subscription_plan': subscription_plan, 'payment_status': is_payment_completed}
 
         return jsonify(context)
     except Exception as e:
