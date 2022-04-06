@@ -6,7 +6,7 @@ import requests
 from decouple import config
 from flask import request
 from src import ZIMPERIUM_HOST, ACTIVATION_LINK_API, SMS_LINK, SMS_MESSAGE, USER_FIRST_NAME, USER_LAST_NAME, \
-    USER_EMAIL, USER_PHONENO
+    USER_EMAIL, USER_PHONENO, UTF8
 from src.models.user_details import Users
 
 
@@ -51,7 +51,7 @@ def renewal_sms_message_format(name, url):
 
 def send_sms_message(mobile_no, text_message):
     data = f'{SMS_LINK}{mobile_no}&{SMS_MESSAGE}={text_message}'
-    result = requests.get(data).content
+    result = requests.get(data).content.decode(UTF8)
     return result
 
 
@@ -98,3 +98,17 @@ def get_zimperium_code(hash_value=None):
         short_token = userdetails.short_token
         return short_token
     return None
+
+
+def redirection_sms_message_format(name, link):
+
+    text_message = f"""
+    Hello {name},
+    Thanks for Subscribing Lookout MES.
+    Please download and activate the application from the link below:
+    {link}
+
+    Thanks,
+    Team Haigreve
+    """
+    return text_message
