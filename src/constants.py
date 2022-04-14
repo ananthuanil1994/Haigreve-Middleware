@@ -150,7 +150,7 @@ ZIMPERIUM_LOGIN_API = "/api/auth/v1/api_keys/login"
 ZIMPERIUM_GROUP_API = '/api/mtd-policy/public/v1/groups/'
 ZIMPERIUM_ACTIVATION_API = "/api/zapp/public/v1/user-activations"
 TOKEN_TABLE_NAME = 'zimperium_tokens'
-ZIMPERIUM_ACTIVATION_LIMIT = 2
+ZIMPERIUM_ACTIVATION_LIMIT = 1
 ACTIVATION_LINK_API = '/api/acceptor/v1/user-activation/activation?stoken='
 
 DECODED_INITIAL = {}
@@ -173,4 +173,7 @@ USER_SUBSCRIBED = 'subscribed'
 ALREADY_SUBSCRIBED = 'user is already subscribed'
 URL = 'url'
 REDIRECTION_URL = 'bd.haigreve.com/activation?phone='
-
+CONNECTION_ERROR = "OOPS!! Connection Error. Make sure you are connected to Internet. Technical Details given below."
+TIMEOUT_ERROR = "OOPS!! Timeout Error"
+GENERAL_ERROR = "OOPS!! General Error"
+PROGRAM_CLOSED_ERROR = "Someone closed the program"

@@ -1,13 +1,14 @@
-import os
-from threading import Lock
-import pandas as pd
-import pysftp
+import jwt
+import time
+from config import ZIMPERIUM_LOGIN_PAYLOAD
 import requests
-from decouple import config
-from flask import request
+from flask import request, jsonify
 from src import ZIMPERIUM_HOST, ACTIVATION_LINK_API, SMS_LINK, SMS_MESSAGE, USER_FIRST_NAME, USER_LAST_NAME, \
-    USER_EMAIL, USER_PHONENO, UTF8
-from src.models.user_details import Users
+    USER_EMAIL, USER_PHONENO, UTF8, db, ZIMPERIUM_REFRESH_TOKEN, ZIMPERIUM_ACCESS_TOKEN, LOGIN_HEADER, TOKEN_EXPIRY, \
+    VALUE_ZERO, VERIFY_SIGNATURE, ACCESS_TOKEN, NONE, STATUS_FALSE, DECODED_INITIAL, ZIMPERIUM_LOGIN_API, BEARER, \
+    ZIMPERIUM_GROUP_API, CONTENT_TYPE, AUTHORIZATION, APPLICATION, RESP_STATUS, SUB_ID
+from src.models.token_details import Tokens
+import json
 
 
 def get_user_details():
@@ -63,52 +64,41 @@ def send_bulk_sms_message(userdata):
     return True
 
 
-def get_activation_code():
-    try:
-        mutex = Lock()
-        cnopts = pysftp.CnOpts()
-        remote_csv_path = 'Teletalk-Consumer/Inbox/Teletalk-Consumer-Teletalk-Consumer-Test-20211123-15776-1563zw3.csv'
-        local_csv_path = 'Teletalk-Consumer-Teletalk-Consumer-Test-20211123-15776-1563zw3.csv'
-        cnopts.hostkeys = None
-        with pysftp.Connection(host=config("SFTP_URL"), port=config("SFTP_PORT"), username=("SFTP_USER"),
-                               password=config("SFTP_PASSWORD"), cnopts=cnopts) as sftp:
-            mutex.acquire()
-            if not sftp.exists(remote_csv_path):
-                return None
-            file = sftp.get(remote_csv_path, preserve_mtime=True)
-            with open(local_csv_path, 'r+') as f:
-                df = pd.read_csv(f)
-                for index, row in df.iterrows():
-                    if row['Status'] == 'unused':
-                        df.loc[index, 'Status'] = 'used'
-                        f.seek(index)
-                        df.to_csv("Teletalk-Consumer-Teletalk-Consumer-Test-20211123-15776-1563zw3.csv", index=False)
-                        sftp.put(local_csv_path, remote_csv_path, preserve_mtime=True)
-                        os.remove('Teletalk-Consumer-Teletalk-Consumer-Test-20211123-15776-1563zw3.csv')
-                        mutex.release()
-                        return row['Code']
+def zimperium_login():
+    url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_LOGIN_API}'
+    obj = Tokens.query.order_by(-Tokens.id).first()
+    decoded = DECODED_INITIAL
+    token = getattr(obj, ACCESS_TOKEN, NONE)
+    if token is not NONE:
+        decoded = jwt.decode(token, options={VERIFY_SIGNATURE: STATUS_FALSE})
+    else:
+        decoded[TOKEN_EXPIRY] = VALUE_ZERO
+    if decoded[TOKEN_EXPIRY] < time.time():
+        response = requests.post(url, json=ZIMPERIUM_LOGIN_PAYLOAD, headers=LOGIN_HEADER)
+        response = json.loads(response.content.decode(UTF8))
 
-    except Exception as e:
-        print(e.__str__())
+        if response:
+            access_token = response[ZIMPERIUM_ACCESS_TOKEN]
+            refresh_token = response[ZIMPERIUM_REFRESH_TOKEN]
+            transaction = Tokens(access_token=access_token, refresh_token=refresh_token)
+            db.session.add(transaction)
+            db.session.commit()
+        else:
+            return False
+        return access_token
+    return token
 
 
-def get_zimperium_code(hash_value=None):
-    if hash_value:
-        userdetails = Users.query.get(hash_value)
-        short_token = userdetails.short_token
-        return short_token
-    return None
-
-
-def redirection_sms_message_format(name, link):
-
-    text_message = f"""
-    Hello {name},
-    Thanks for Subscribing Lookout MES.
-    Please download and activate the application from the link below:
-    {link}
-
-    Thanks,
-    Team Haigreve
-    """
-    return text_message
+def get_default_group_id():
+    access_token = BEARER + ' ' + zimperium_login()
+    url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_GROUP_API}'
+    headers = {
+        CONTENT_TYPE: APPLICATION,
+        AUTHORIZATION: access_token
+    }
+    response = requests.get(url, headers=headers)
+    response = json.loads(response.content.decode(UTF8))
+    if not response:
+        return jsonify({RESP_STATUS: STATUS_FALSE})
+    group_id = response[0][SUB_ID]
+    return group_id, access_token
