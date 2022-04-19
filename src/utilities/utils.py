@@ -58,8 +58,10 @@ def send_sms_message(mobile_no, text_message):
 
 def send_bulk_sms_message(userdata):
     for user in userdata:
-        mobile_no = user.mobileNo
-        text_message = renewal_sms_message_format(user.name, "")
+        print(user)
+        mobile_no = user.mobile_number
+        print(mobile_no)
+        text_message = renewal_sms_message_format(user.first_name, user.expiration_date, "")
         send_sms_message(mobile_no, text_message)
     return True
 
