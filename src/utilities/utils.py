@@ -38,10 +38,10 @@ def get_activation_link(code):
     return url
 
 
-def renewal_sms_message_format(name, url):
+def renewal_sms_message_format(name, date, url):
     text_message = f"""
     Hello {name},
-    Your Lookout MES subscription is expiring on DD/MM/YY.
+    Your Lookout MES subscription is expiring on {date}.
     To resubscribe please visit {url} .
 
     Thanks,
@@ -58,9 +58,7 @@ def send_sms_message(mobile_no, text_message):
 
 def send_bulk_sms_message(userdata):
     for user in userdata:
-        print(user)
         mobile_no = user.mobile_number
-        print(mobile_no)
         text_message = renewal_sms_message_format(user.first_name, user.expiration_date, "")
         send_sms_message(mobile_no, text_message)
     return True
