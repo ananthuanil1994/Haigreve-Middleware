@@ -9,6 +9,6 @@ CORS(app)
 app.register_blueprint(teletalk_routes)
 
 if __name__ == '__main__':
-    #start_scheduler()
+    start_scheduler()
     # app.run(debug=True, use_reloader=False)
-    app.run(debug=APP_DEBUG)
+    app.run(debug=APP_DEBUG, use_reloader=False)
