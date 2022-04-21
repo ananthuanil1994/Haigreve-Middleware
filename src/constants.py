@@ -115,8 +115,8 @@ PLAN_VALUE = 1
 subscriptionPlans = [
     {
         "id": 1,
-        "planName": "1 Month License",
-        "amount": 80
+        "planName": "1 Day License",
+        "amount": 2
     },
     {
         "id": 2,
