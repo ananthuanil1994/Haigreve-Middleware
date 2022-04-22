@@ -33,7 +33,7 @@ URL_CONFIRM_SUBSCRIPTION = '/confirmSubscription'
 URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
 URL_ACTIVATE_USER_SUBSCRIPTION = '/activateSubscription'
 URL_REDIRECTION_LINK = '/redirectionLink'
-
+URL_DEACTIVATE_USER_SUBSCRIPTION = '/deactivateSubscription'
 SMS_LINK = "http://202.74.240.169/sending_sms_win/Default.aspx?login_name=haigreve&mobileno="
 SMS_MESSAGE = 'msg'
 # SMS_DEFAULT_CODE = ""
@@ -152,7 +152,8 @@ ZIMPERIUM_ACTIVATION_API = "/api/zapp/public/v1/user-activations"
 TOKEN_TABLE_NAME = 'zimperium_tokens'
 ZIMPERIUM_ACTIVATION_LIMIT = 1
 ACTIVATION_LINK_API = '/api/acceptor/v1/user-activation/activation?stoken='
-
+ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_SUCCESS = 204
+ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND = 404
 DECODED_INITIAL = {}
 ACCESS_TOKEN = 'access_token'
 NONE = None
@@ -168,12 +169,17 @@ VALUE_ZERO = 0
 MESSAGE_STATUS = 'message_status'
 DEFAULT_USER_TYPE = "WEB"
 ERROR_RESPONSE = 'database or API error'
-USER_NOT_SUBSCRIBED = 'The user is not subscribed'
+USER_NOT_SUBSCRIBED = 'The user is not registered'
 USER_SUBSCRIBED = 'subscribed'
-ALREADY_SUBSCRIBED = 'user is already subscribed'
+ALREADY_SUBSCRIBED = 'user is already registered'
 URL = 'url'
 REDIRECTION_URL = 'bd.haigreve.com/activation?phone='
 CONNECTION_ERROR = "OOPS!! Connection Error. Make sure you are connected to Internet. Technical Details given below."
 TIMEOUT_ERROR = "OOPS!! Timeout Error"
 GENERAL_ERROR = "OOPS!! General Error"
 PROGRAM_CLOSED_ERROR = "Someone closed the program"
+SLASH = '/'
+USER_DEACTIVATED = 'Deactivated'
+USER_ALREADY_DEACTIVATED = 'User already deactivated'
+USER_NOT_DEACTIVATED = 'Deactivation failed due to API error'
+NO_USER_TO_DEACTIVATE = "No user to deactivate"

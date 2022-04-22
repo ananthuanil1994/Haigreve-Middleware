@@ -3,13 +3,17 @@ import json
 import requests
 from flask import jsonify, request
 from src import ZIMPERIUM_HOST, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
-    ZIMPERIUM_ACTIVATION_LIMIT, NONE, UTF8, SUB_ID, MESSAGE, GRP_ID, SHORT_TOKEN, PAYMENT_SUCCESS, USER_PHONENO, \
+    ZIMPERIUM_ACTIVATION_LIMIT, NONE, UTF8, SUB_ID, MESSAGE, GRP_ID, SHORT_TOKEN, USER_PHONENO, \
     ERROR_RESPONSE, USER_SUBSCRIBED, USER_NOT_SUBSCRIBED, URL, CONNECTION_ERROR, TIMEOUT_ERROR, GENERAL_ERROR, \
-    PROGRAM_CLOSED_ERROR
+    PROGRAM_CLOSED_ERROR, SLASH, USER_DEACTIVATED, USER_NOT_DEACTIVATED, \
+    ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_SUCCESS, ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND, \
+    USER_ALREADY_DEACTIVATED, NO_USER_TO_DEACTIVATE
 from src.handlers.subscription_handler import check_subscription_status
 from src.models.user_details import Users
+from src.services.getRenewalUsersList import get_users_for_deactivating
 from src.services.updateUserSubscriptionDetails import update_details
 from src.utilities.utils import get_activation_link, get_default_group_id
+from src import db
 
 
 def activate_zimperium_user():
@@ -52,7 +56,6 @@ def activate_zimperium_user():
             user_details.group_id = response[GRP_ID]
             user_details.activation_id = response[SUB_ID]
             user_details.short_token = response[SHORT_TOKEN]
-            user_details.payment_status = PAYMENT_SUCCESS
             result = update_details(user_details)
             url = ERROR_RESPONSE
             if user_details.short_token and result:
@@ -73,3 +76,41 @@ def activate_zimperium_user():
         pass
     except KeyboardInterrupt:
         print(PROGRAM_CLOSED_ERROR)
+
+
+def deactivate_zimperium_users():
+    user_data = get_users_for_deactivating()
+    if user_data:
+        for user in user_data:
+            mobile_no = user.mobile_number
+            group_id, access_token = get_default_group_id()
+            hash_value = hashlib.md5(mobile_no.encode(UTF8)).hexdigest()
+            user_details = Users.query.get(hash_value)
+            if user_details:
+                activation_id = user_details.activation_id
+            else:
+                return jsonify({MESSAGE: USER_NOT_SUBSCRIBED})
+            url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_ACTIVATION_API}{SLASH}{activation_id}'
+            headers = {
+                CONTENT_TYPE: APPLICATION,
+                AUTHORIZATION: access_token
+            }
+
+            response = requests.delete(url, headers=headers)
+            response_code = response.status_code
+            if response_code == ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_SUCCESS:
+                user_details.group_id = NONE
+                user_details.activation_id = NONE
+                user_details.short_token = NONE
+                user_details.is_subscribed = STATUS_FALSE
+                user_details.is_payment_completed = STATUS_FALSE
+                db.session.commit()
+                print(USER_DEACTIVATED)
+                return True
+            elif response_code == ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND:
+                print(USER_ALREADY_DEACTIVATED)
+                return True
+            print(USER_NOT_DEACTIVATED)
+            return True
+    print(NO_USER_TO_DEACTIVATE)
+    return True

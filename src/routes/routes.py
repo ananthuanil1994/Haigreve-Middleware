@@ -32,3 +32,4 @@ app.add_url_rule(URL_CHECK_SUBSCRIPTION_STATUS,
 app.add_url_rule(URL_ACTIVATE_USER_SUBSCRIPTION,
                  view_func=activate_zimperium_user,
                  methods=[POST_METHOD])
+
