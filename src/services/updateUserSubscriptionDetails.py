@@ -10,7 +10,7 @@ def update_details(user_details):
         user_details.is_payment_completed = STATUS_TRUE
         user_details.subscription_date = datetime.utcnow()
         if user_details.subscription_plan == 1:
-            user_details.expiration_date = datetime.utcnow() + relativedelta(months=+1)
+            user_details.expiration_date = datetime.utcnow() + relativedelta(days=+1)
         elif user_details.subscription_plan == 2:
             user_details.expiration_date = datetime.utcnow() + relativedelta(months=+3)
         elif user_details.subscription_plan == 3:

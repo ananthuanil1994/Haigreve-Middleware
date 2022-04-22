@@ -1,3 +1,4 @@
+from src import VALUE_ZERO
 from src.models.user_details import Users
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -12,3 +13,8 @@ def get_users_for_renewal():
         filter(Users.expiration_date <= next_date).all()
     send_bulk_sms_message(user_data)
     return True
+
+
+def get_users_for_deactivating():
+    user_data = Users.query.filter(Users.is_subscribed == VALUE_ZERO)
+    return user_data
