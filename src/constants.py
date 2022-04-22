@@ -183,3 +183,4 @@ USER_DEACTIVATED = 'Deactivated'
 USER_ALREADY_DEACTIVATED = 'User already deactivated'
 USER_NOT_DEACTIVATED = 'Deactivation failed due to API error'
 NO_USER_TO_DEACTIVATE = "No user to deactivate"
+NETWORK_PROVIDER = 'provider'

@@ -19,6 +19,7 @@ class Users(db.Model):
     activation_id = db.Column(db.String(50), nullable=STATUS_TRUE)
     short_token = db.Column(db.String(50), nullable=STATUS_TRUE)
     type = db.Column(db.String(50), default=DEFAULT_USER_TYPE)
+    provider = db.Column(db.String(50), default=DEFAULT_USER_TYPE)
 
 
 db.create_all()

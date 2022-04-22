@@ -12,6 +12,7 @@ def save_customer_details():
         last_name = request.json[USER_LAST_NAME]
         email = request.json[USER_EMAIL]
         phone_number = request.json[USER_PHONENO]
+        provider = request.json[NETWORK_PROVIDER]
         subscription_plan = request.json[USER_SUBPLAN]
         hash_value = hashlib.md5(phone_number.encode(UTF8)).hexdigest()
         user_details = Users.query.get(hash_value)
@@ -42,6 +43,7 @@ def save_customer_details():
             'activation_id': activation_id,
             'short_token': short_token,
             'type': DEFAULT_USER_TYPE,
+            'provider': provider
         }
 
         db_response = add_user(data)
