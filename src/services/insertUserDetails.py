@@ -10,6 +10,6 @@ def add_user(data):
                          group_id=data['group_id'], activation_id=data['activation_id'], short_token=data['short_token'],
                          type=data['type'], provider=data['provider']
                          )
-    db.session.merge(user_details)
+    db.session.add(user_details)
     db.session.commit()
     return True

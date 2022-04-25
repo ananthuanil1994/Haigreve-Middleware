@@ -4,11 +4,11 @@ import requests
 from flask import jsonify, request
 from src import ZIMPERIUM_HOST, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
     ZIMPERIUM_ACTIVATION_LIMIT, NONE, UTF8, SUB_ID, MESSAGE, GRP_ID, SHORT_TOKEN, USER_PHONENO, \
-    ERROR_RESPONSE, USER_SUBSCRIBED, USER_NOT_SUBSCRIBED, URL, CONNECTION_ERROR, TIMEOUT_ERROR, GENERAL_ERROR, \
+    ERROR_RESPONSE, USER_NOT_REGISTERED, URL, CONNECTION_ERROR, TIMEOUT_ERROR, GENERAL_ERROR, \
     PROGRAM_CLOSED_ERROR, SLASH, USER_DEACTIVATED, USER_NOT_DEACTIVATED, \
     ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_SUCCESS, ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND, \
-    USER_ALREADY_DEACTIVATED, NO_USER_TO_DEACTIVATE
-from src.handlers.subscription_handler import check_subscription_status
+    USER_ALREADY_DEACTIVATED, NO_USER_TO_DEACTIVATE, USER_NOT_SUBSCRIBED, USER_SUBSCRIBED
+from src.handlers.subscription_handler import check_sms_subscription_status, check_subscription_status
 from src.models.user_details import Users
 from src.services.getRenewalUsersList import get_users_for_deactivating
 from src.services.updateUserSubscriptionDetails import update_details
@@ -20,11 +20,9 @@ def activate_zimperium_user():
     try:
         group_id, access_token = get_default_group_id()
         mobile_no = request.json[USER_PHONENO]
-        result = check_subscription_status(mobile_no)
-        if result == USER_SUBSCRIBED:
-            hash_value = hashlib.md5(mobile_no.encode(UTF8)).hexdigest()
-            user_details = Users.query.get(hash_value)
-            if user_details:
+        user_details = check_sms_subscription_status(mobile_no)
+        if user_details:
+            if user_details.is_subscribed:
                 first_name = user_details.first_name
                 last_name = user_details.last_name
                 email = user_details.email
@@ -89,7 +87,7 @@ def deactivate_zimperium_users():
             if user_details:
                 activation_id = user_details.activation_id
             else:
-                return jsonify({MESSAGE: USER_NOT_SUBSCRIBED})
+                return jsonify({MESSAGE: USER_NOT_REGISTERED})
             url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_ACTIVATION_API}{SLASH}{activation_id}'
             headers = {
                 CONTENT_TYPE: APPLICATION,

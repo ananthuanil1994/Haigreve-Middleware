@@ -9,7 +9,7 @@ class Users(db.Model):
     first_name = db.Column(db.String(50), nullable=STATUS_FALSE)
     last_name = db.Column(db.String(50), nullable=STATUS_FALSE)
     mobile_number = db.Column(db.String(20), unique=STATUS_TRUE, nullable=STATUS_FALSE)
-    email = db.Column(db.String(20), nullable=STATUS_FALSE)
+    email = db.Column(db.String(50), nullable=STATUS_FALSE)
     is_subscribed = db.Column(db.Boolean, server_default=expression.false(), nullable=STATUS_FALSE)
     subscription_plan = db.Column(db.Integer, nullable=STATUS_TRUE)
     is_payment_completed = db.Column(db.Boolean, server_default=expression.false(), nullable=STATUS_FALSE)

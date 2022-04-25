@@ -10,7 +10,6 @@ def save_customer_details():
     try:
         first_name = request.json[USER_FIRST_NAME]
         last_name = request.json[USER_LAST_NAME]
-        email = request.json[USER_EMAIL]
         phone_number = request.json[USER_PHONENO]
         provider = request.json[NETWORK_PROVIDER]
         subscription_plan = request.json[USER_SUBPLAN]
@@ -25,8 +24,10 @@ def save_customer_details():
             group_id = STATUS_FALSE
             activation_id = STATUS_FALSE
             short_token = STATUS_FALSE
+            number = phone_number.strip('+')
+            email = f'{number}@{provider}.com'
         else:
-            return jsonify({MESSAGE: ALREADY_SUBSCRIBED})
+            return jsonify({MESSAGE: ALREADY_REGISTERED})
 
         data = {
             'hash_value': hash_value,
@@ -47,9 +48,6 @@ def save_customer_details():
         }
 
         db_response = add_user(data)
-        context = {'id': hash_value, 'name': first_name, 'phone_number': phone_number, 'email': email,
-                   'subscription_plan': subscription_plan, 'payment_status': is_payment_completed}
-
-        return jsonify(context)
+        return jsonify({MESSAGE: USER_REGISTERED})
     except Exception as e:
         print(e.__str__())
