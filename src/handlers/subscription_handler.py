@@ -2,14 +2,14 @@ import hashlib
 import uuid
 from datetime import datetime
 import requests
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from src import db
 from src.models.transaction_details import Transactions
 from src.constants import SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYPE, SUB_SERVICE_NAME, \
     SUB_CHANNEL_NAME, SUB_PAGE_URL, CLIENT_ID, TRANSACTION_ID, SUB_MOBILE_NUMBER, PRODUCT_ID, SERVICE_ID, \
     CHANNEL_NAME, SERVICE_NAME, TYPE, CHECK_SUB_URL, UTF8, PROGRAM_CLOSED_ERROR, GENERAL_ERROR, TIMEOUT_ERROR, \
     CONNECTION_ERROR, USER_PHONENO, STATUS_TRUE, STATUS_FALSE, SMS_SUBSCRIPTION_STATUS, MESSAGE, STATUS_UPDATED, \
-    USER_NOT_REGISTERED
+    USER_NOT_REGISTERED, ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND
 from src.models.user_details import Users
 from src.utilities.utils import get_user_details
 
@@ -78,5 +78,5 @@ def update_user_subscription_status():
             user_details.is_subscribed = STATUS_FALSE
             db.session.commit()
         return jsonify({MESSAGE: STATUS_UPDATED})
-    return jsonify({MESSAGE: USER_NOT_REGISTERED})
+    return make_response(jsonify({MESSAGE: USER_NOT_REGISTERED}), ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND)
 

@@ -188,4 +188,5 @@ USER_NOT_DEACTIVATED = 'Deactivation failed due to API error'
 NO_USER_TO_DEACTIVATE = "No user to deactivate"
 NETWORK_PROVIDER = 'provider'
 SMS_SUBSCRIPTION_STATUS = 'subscription_status'
-STATUS_UPDATED = 'status updated'
+STATUS_UPDATED = 'user status updated'
+
