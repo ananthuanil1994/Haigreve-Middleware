@@ -34,6 +34,7 @@ URL_CHECK_SUBSCRIPTION_STATUS = '/checkSubscriptionStatus'
 URL_ACTIVATE_USER_SUBSCRIPTION = '/activateSubscription'
 URL_REDIRECTION_LINK = '/redirectionLink'
 URL_DEACTIVATE_USER_SUBSCRIPTION = '/deactivateSubscription'
+URL_UPDATE_USER_SUBSCRIPTION_STATUS = '/updateSubscriptionStatus'
 SMS_LINK = "http://202.74.240.169/sending_sms_win/Default.aspx?login_name=haigreve&mobileno="
 SMS_MESSAGE = 'msg'
 # SMS_DEFAULT_CODE = ""
@@ -169,9 +170,11 @@ VALUE_ZERO = 0
 MESSAGE_STATUS = 'message_status'
 DEFAULT_USER_TYPE = "WEB"
 ERROR_RESPONSE = 'database or API error'
-USER_NOT_SUBSCRIBED = 'The user is not registered'
+USER_NOT_REGISTERED = 'The user is not registered'
+USER_REGISTERED = 'The user is registered'
+ALREADY_REGISTERED = 'user is already registered'
+USER_NOT_SUBSCRIBED = 'The user is not subscribed'
 USER_SUBSCRIBED = 'subscribed'
-ALREADY_SUBSCRIBED = 'user is already registered'
 URL = 'url'
 REDIRECTION_URL = 'bd.haigreve.com/activation?phone='
 CONNECTION_ERROR = "OOPS!! Connection Error. Make sure you are connected to Internet. Technical Details given below."
@@ -184,3 +187,6 @@ USER_ALREADY_DEACTIVATED = 'User already deactivated'
 USER_NOT_DEACTIVATED = 'Deactivation failed due to API error'
 NO_USER_TO_DEACTIVATE = "No user to deactivate"
 NETWORK_PROVIDER = 'provider'
+SMS_SUBSCRIPTION_STATUS = 'subscription_status'
+STATUS_UPDATED = 'user status updated'
+
