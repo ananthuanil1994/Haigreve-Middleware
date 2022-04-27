@@ -68,7 +68,7 @@ def check_sms_subscription_status(mobile_number):
 
 
 def update_user_subscription_status():
-    mobile_number = request.json[MSISDN]
+    number = request.json[MSISDN]
     short_code = request.json[SHORT_CODE]
     text = request.json[TEXT]
     mnocode = request.json[MNO_CODE]
@@ -78,9 +78,10 @@ def update_user_subscription_status():
     service_id = request.json[TRANSACTION_SERVICE_ID]
     transaction_id = request.json[TRANSACTIONID]
     transaction_details = Transactions.query.get(transaction_id)
+    mobile_number = PLUS + number
     hash_value = hashlib.md5(mobile_number.encode(UTF8)).hexdigest()
     user_details = Users.query.get(hash_value)
-    number = mobile_number.strip(PLUS)
+
     email = f'{number}@{number}{COM}'
     if subscription_status == SUB or RENEW:
         is_subscribed = STATUS_TRUE
