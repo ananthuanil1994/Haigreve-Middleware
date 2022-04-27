@@ -46,10 +46,13 @@ def activate_zimperium_user():
 
             response = requests.post(url, data=payload, headers=headers)
             response = json.loads(response.content.decode(UTF8))
-
-            if response.get(MESSAGE, NONE):
-                url = NONE
-                return make_response(jsonify({URL: url}), 404)
+            has_response = response.get(MESSAGE, NONE)
+            if has_response:
+                if user_details.short_token:
+                    url = get_activation_link(user_details.short_token)
+                else:
+                    url = NONE
+                return jsonify({URL: url})
 
             user_details.group_id = response[GRP_ID]
             user_details.activation_id = response[SUB_ID]
