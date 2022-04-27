@@ -62,7 +62,7 @@ SMS_MESSAGE = 'msg'
 
 GET_METHOD = "GET"
 POST_METHOD = "POST"
-
+PUT_METHOD = "PUT"
 # Model
 
 TABLE_NAME = "user_details"
@@ -199,3 +199,7 @@ TRANSACTIONID = 'transid'
 SUB = 'sub'
 TRANSACTION_ERROR = 'Transaction id already exist'
 COM = '.com'
+ERROR = 'error'
+PLUS = '+'
+NO_CONTENT_RESPONSE_CODE = 204
+RENEW = 'renew'

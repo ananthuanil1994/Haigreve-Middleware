@@ -1,7 +1,7 @@
 import hashlib
 import json
 import requests
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from src import ZIMPERIUM_HOST, AUTHORIZATION, CONTENT_TYPE, APPLICATION, STATUS_FALSE, ZIMPERIUM_ACTIVATION_API, \
     ZIMPERIUM_ACTIVATION_LIMIT, NONE, UTF8, SUB_ID, MESSAGE, GRP_ID, SHORT_TOKEN, USER_PHONENO, \
     ERROR_RESPONSE, USER_NOT_REGISTERED, URL, CONNECTION_ERROR, TIMEOUT_ERROR, GENERAL_ERROR, \
@@ -48,15 +48,16 @@ def activate_zimperium_user():
             response = json.loads(response.content.decode(UTF8))
 
             if response.get(MESSAGE, NONE):
-                url = get_activation_link(user_details.short_token)
-                return jsonify({URL: url})
+                url = NONE
+                return make_response(jsonify({URL: url}), 404)
 
             user_details.group_id = response[GRP_ID]
             user_details.activation_id = response[SUB_ID]
             user_details.short_token = response[SHORT_TOKEN]
             result = update_details(user_details)
             url = ERROR_RESPONSE
-            if user_details.short_token and result:
+            short_token = user_details.short_token
+            if short_token and result:
                 url = get_activation_link(user_details.short_token)
             return jsonify({URL: url})
         return jsonify({URL: NONE})
