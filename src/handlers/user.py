@@ -50,6 +50,10 @@ def save_customer_details():
             }
 
             db_response = add_user(data)
-        return jsonify({MESSAGE: USER_REGISTERED})
+            if db_response:
+                return jsonify({ERROR: STATUS_FALSE, MESSAGE: USER_REGISTERED})
+            return jsonify({ERROR: STATUS_TRUE, MESSAGE: USER_NOT_REGISTERED})
+        return jsonify({ERROR: STATUS_FALSE, MESSAGE: USER_REGISTERED})
+
     except Exception as e:
         print(e.__str__())
