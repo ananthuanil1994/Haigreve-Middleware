@@ -89,7 +89,8 @@ def zimperium_login():
     return token
 
 
-def get_default_group_id():
+def get_group_id(group_name):
+    group_id = NONE
     access_token = BEARER + ' ' + zimperium_login()
     url = f'{ZIMPERIUM_HOST}{ZIMPERIUM_GROUP_API}'
     headers = {
@@ -100,5 +101,8 @@ def get_default_group_id():
     response = json.loads(response.content.decode(UTF8))
     if not response:
         return jsonify({RESP_STATUS: STATUS_FALSE})
-    group_id = response[0][SUB_ID]
+    group_name = group_name.title()
+    for group in response:
+        if group['name'] == group_name:
+            group_id = group['id']
     return group_id, access_token
