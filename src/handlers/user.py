@@ -22,6 +22,7 @@ def save_customer_details():
             user_details.first_name = first_name
             user_details.last_name = last_name
             user_details.email = email
+            user_details.provider = provider
             db.session.commit()
         else:
             subscription_date = datetime.utcnow()
