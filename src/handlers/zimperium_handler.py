@@ -12,7 +12,7 @@ from src.handlers.subscription_handler import check_sms_subscription_status
 from src.models.user_details import Users
 from src.services.getRenewalUsersList import get_users_for_deactivating
 from src.services.updateUserSubscriptionDetails import update_details
-from src.utilities.utils import get_activation_link, get_group_id
+from src.utilities.utils import get_activation_link, get_group_id, zimperium_login
 from src import db
 
 
@@ -86,7 +86,7 @@ def deactivate_zimperium_users():
     if user_data:
         for user in user_data:
             mobile_no = user.mobile_number
-            group_id, access_token = get_group_id()
+            access_token = zimperium_login()
             hash_value = hashlib.md5(mobile_no.encode(UTF8)).hexdigest()
             user_details = Users.query.get(hash_value)
             if user_details:
