@@ -6,7 +6,7 @@ from flask import request, jsonify
 from src import ZIMPERIUM_HOST, ACTIVATION_LINK_API, SMS_LINK, SMS_MESSAGE, USER_FIRST_NAME, USER_LAST_NAME, \
     USER_EMAIL, USER_PHONENO, UTF8, db, ZIMPERIUM_REFRESH_TOKEN, ZIMPERIUM_ACCESS_TOKEN, LOGIN_HEADER, TOKEN_EXPIRY, \
     VALUE_ZERO, VERIFY_SIGNATURE, ACCESS_TOKEN, NONE, STATUS_FALSE, DECODED_INITIAL, ZIMPERIUM_LOGIN_API, BEARER, \
-    ZIMPERIUM_GROUP_API, CONTENT_TYPE, AUTHORIZATION, APPLICATION, RESP_STATUS, SUB_ID
+    ZIMPERIUM_GROUP_API, CONTENT_TYPE, AUTHORIZATION, APPLICATION, RESP_STATUS, SUB_ID, RESP_NAME, RESP_ID
 from src.models.token_details import Tokens
 import json
 
@@ -103,6 +103,6 @@ def get_group_id(group_name):
         return jsonify({RESP_STATUS: STATUS_FALSE})
     group_name = group_name.title()
     for group in response:
-        if group['name'] == group_name:
-            group_id = group['id']
+        if group[RESP_NAME] == group_name:
+            group_id = group[RESP_ID]
     return group_id, access_token
