@@ -13,6 +13,7 @@ class Transactions(db.Model):
     status = db.Column(db.String(20), nullable=STATUS_FALSE)
     type = db.Column(db.String(20), nullable=STATUS_FALSE)
     service_id = db.Column(db.String(50), nullable=STATUS_FALSE)
+    date_updated = db.Column(db.Date(), nullable=STATUS_FALSE)
 
 
 db.create_all()

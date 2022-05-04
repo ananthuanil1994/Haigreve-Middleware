@@ -1,3 +1,4 @@
+from src.handlers.report_generator import report_generator
 from src.handlers.user import save_customer_details
 from src.handlers.subscription_plan import show_subscription_plans
 from src.handlers.updateUserDetails import update_customer_details
@@ -37,4 +38,8 @@ app.add_url_rule(URL_ACTIVATE_USER_SUBSCRIPTION,
 app.add_url_rule(URL_UPDATE_USER_SUBSCRIPTION_STATUS,
                  view_func=update_user_subscription_status,
                  methods=[POST_METHOD])
+
+app.add_url_rule(URL_REPORT_GENERATOR,
+                 view_func=report_generator,
+                 methods=[GET_METHOD])
 

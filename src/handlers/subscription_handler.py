@@ -78,7 +78,10 @@ def update_user_subscription_status():
     service_id = request.json[TRANSACTION_SERVICE_ID]
     transaction_id = request.json[TRANSACTIONID]
     transaction_details = Transactions.query.get(transaction_id)
-    mobile_number = PLUS + number
+    if number.startswith(PLUS):
+        mobile_number = number
+    else:
+        mobile_number = PLUS + number
     hash_value = hashlib.md5(mobile_number.encode(UTF8)).hexdigest()
     user_details = Users.query.get(hash_value)
 
