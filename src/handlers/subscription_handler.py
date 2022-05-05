@@ -14,7 +14,7 @@ from src.constants import SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYP
 from src.models.user_details import Users
 from src.services.insertUserDetails import add_user
 from src.utilities.utils import get_user_details
-
+from datetime import date
 
 def get_confirm_subscription_url():
     try:
@@ -78,6 +78,7 @@ def update_user_subscription_status():
     service_id = request.json[TRANSACTION_SERVICE_ID]
     transaction_id = request.json[TRANSACTIONID]
     transaction_details = Transactions.query.get(transaction_id)
+    date_updated = date.today()
     if number.startswith(PLUS):
         mobile_number = number
     else:
@@ -96,7 +97,7 @@ def update_user_subscription_status():
     if not transaction_details:
         transaction = Transactions(transaction_id=transaction_id, mobile_number=mobile_number, short_code=short_code,
                                    text=text, mnocode=mnocode, status=status, time=time, type=subscription_status,
-                                   service_id=service_id)
+                                   service_id=service_id, date_updated=date_updated)
         db.session.add(transaction)
         db.session.commit()
         if not user_details:

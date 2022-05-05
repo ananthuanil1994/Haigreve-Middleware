@@ -19,17 +19,17 @@ app.add_url_rule(URL_SAVE_CUSTOMER_DETAILS,
                  view_func=save_customer_details,
                  methods=[POST_METHOD])
 
-app.add_url_rule(URL_UPDATE_CUSTOMER_DETAILS,
-                 view_func=update_customer_details,
-                 methods=[POST_METHOD])
+# app.add_url_rule(URL_UPDATE_CUSTOMER_DETAILS,
+#                  view_func=update_customer_details,
+#                  methods=[POST_METHOD])
 
-app.add_url_rule(URL_CONFIRM_SUBSCRIPTION,
-                 view_func=get_confirm_subscription_url,
-                 methods=[POST_METHOD])
+# app.add_url_rule(URL_CONFIRM_SUBSCRIPTION,
+#                  view_func=get_confirm_subscription_url,
+#                  methods=[POST_METHOD])
 
-app.add_url_rule(URL_CHECK_SUBSCRIPTION_STATUS,
-                 view_func=check_subscription_status,
-                 methods=[POST_METHOD])
+# app.add_url_rule(URL_CHECK_SUBSCRIPTION_STATUS,
+#                  view_func=check_subscription_status,
+#                  methods=[POST_METHOD])
 
 app.add_url_rule(URL_ACTIVATE_USER_SUBSCRIPTION,
                  view_func=activate_zimperium_user,
