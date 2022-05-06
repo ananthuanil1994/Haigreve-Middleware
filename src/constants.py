@@ -142,7 +142,7 @@ PAYMENT_SUCCESS = 'success'
 PAYMENT_FAILED = 'failed'
 
 # ZIMPERIUM
-ZIMPERIUM_HOST = 'https://ziap.zimperium.com'
+ZIMPERIUM_HOST = 'https://zapac.zimperium.com'
 LOGIN_HEADER = {"Content-Type": "application/json"}
 BEARER = 'Bearer'
 AUTHORIZATION = 'Authorization'
