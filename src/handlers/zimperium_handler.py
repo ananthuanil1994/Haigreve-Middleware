@@ -108,6 +108,7 @@ def deactivate_zimperium_users():
                 user_details.is_subscribed = STATUS_FALSE
                 user_details.is_payment_completed = STATUS_FALSE
                 db.session.commit()
+                db.session.close()
                 print(USER_DEACTIVATED)
                 return True
             elif response_code == ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND:
