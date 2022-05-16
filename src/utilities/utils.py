@@ -83,7 +83,6 @@ def zimperium_login():
             transaction = Tokens(access_token=access_token, refresh_token=refresh_token)
             db.session.add(transaction)
             db.session.commit()
-            db.session.close()
         else:
             return False
         return access_token
