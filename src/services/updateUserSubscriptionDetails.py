@@ -22,6 +22,8 @@ def update_details(user_details):
         db.session.commit()
         status = True
     except Exception as e:
+        db.session.rollback()
         status = False
     finally:
+        db.session.close()
         return status

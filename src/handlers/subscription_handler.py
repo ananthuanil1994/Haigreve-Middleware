@@ -25,6 +25,7 @@ def get_confirm_subscription_url():
                                    transaction_date=transaction_date)
         db.session.add(transaction)
         db.session.commit()
+        db.session.close()
         url = f'{SUB_PAGE_URL}?{CLIENT_ID}={SUB_CLIENT_ID}&{TRANSACTION_ID}={transaction_id}&{SUB_MOBILE_NUMBER}' \
               f'={mobile_no}&{PRODUCT_ID}={SUB_PRODUCT_ID}&{SERVICE_ID}={SUB_SERVICE_ID}&{TYPE}={SUB_TYPE}&' \
               f'{SERVICE_NAME}={SUB_SERVICE_NAME}'
@@ -100,6 +101,7 @@ def update_user_subscription_status():
                                    service_id=service_id, date_updated=date_updated)
         db.session.add(transaction)
         db.session.commit()
+        db.session.close()
         if not user_details:
             data = {
                 'hash_value': hash_value,
@@ -123,5 +125,6 @@ def update_user_subscription_status():
             user_details.is_subscribed = is_subscribed
             user_details.is_payment_completed = payment_completed
             db.session.commit()
+            db.session.close()
         return jsonify({MESSAGE: STATUS_UPDATED})
     return make_response(jsonify({MESSAGE: TRANSACTION_ERROR}), ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND)

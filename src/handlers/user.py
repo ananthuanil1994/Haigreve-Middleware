@@ -16,7 +16,7 @@ def save_customer_details():
         subscription_plan = request.json[USER_SUBPLAN]
         hash_value = hashlib.md5(phone_number.encode(UTF8)).hexdigest()
         user_details = Users.query.get(hash_value)
-        number = phone_number.strip('+')
+        number = phone_number.strip(PLUS)
         email = f'{number}@{provider}{COM}'
         if user_details:
             user_details.first_name = first_name
@@ -24,6 +24,7 @@ def save_customer_details():
             user_details.email = email
             user_details.provider = provider
             db.session.commit()
+            db.session.close()
         else:
             subscription_date = datetime.utcnow()
             expiration_date = datetime.utcnow()

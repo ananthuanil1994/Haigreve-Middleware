@@ -12,4 +12,5 @@ def add_user(data):
                          )
     db.session.merge(user_details)
     db.session.commit()
+    db.session.close()
     return True
