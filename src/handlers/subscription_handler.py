@@ -8,9 +8,9 @@ from src.models.transaction_details import Transactions
 from src.constants import SUB_CLIENT_ID, SUB_PRODUCT_ID, SUB_SERVICE_ID, SUB_TYPE, SUB_SERVICE_NAME, \
     SUB_CHANNEL_NAME, SUB_PAGE_URL, CLIENT_ID, TRANSACTION_ID, SUB_MOBILE_NUMBER, PRODUCT_ID, SERVICE_ID, \
     CHANNEL_NAME, SERVICE_NAME, TYPE, CHECK_SUB_URL, UTF8, PROGRAM_CLOSED_ERROR, GENERAL_ERROR, TIMEOUT_ERROR, \
-    CONNECTION_ERROR, STATUS_TRUE, STATUS_FALSE, MESSAGE, MSISDN, SHORT_CODE, TEXT, STATUS_UPDATED, MNO_CODE,\
-    ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND, RESP_STATUS, TRANSACTION_SERVICE_ID, TIME, TRANSACTIONID, SUB,\
-    DEFAULT_USER_TYPE, TRANSACTION_ERROR, COM, PLUS, RENEW
+    CONNECTION_ERROR, STATUS_TRUE, STATUS_FALSE, MESSAGE, MSISDN, SHORT_CODE, TEXT, STATUS_UPDATED, MNO_CODE, \
+    ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND, RESP_STATUS, TRANSACTION_SERVICE_ID, TIME, TRANSACTIONID, SUB, \
+    DEFAULT_USER_TYPE, TRANSACTION_ERROR, COM, PLUS, RENEW, THRESHOLD_VALUE
 from src.models.user_details import Users
 from src.services.insertUserDetails import add_user
 from src.utilities.utils import get_user_details
@@ -80,7 +80,7 @@ def update_user_subscription_status():
     transaction_id = request.json[TRANSACTIONID]
     transaction_details = Transactions.query.get(transaction_id)
     date_updated = date.today()
-    if number.startswith(PLUS):
+    if number.startswith(PLUS) or len(number) > THRESHOLD_VALUE:
         mobile_number = number
     else:
         mobile_number = PLUS + number
@@ -101,7 +101,6 @@ def update_user_subscription_status():
                                    service_id=service_id, date_updated=date_updated)
         db.session.add(transaction)
         db.session.commit()
-        db.session.close()
         if not user_details:
             data = {
                 'hash_value': hash_value,
