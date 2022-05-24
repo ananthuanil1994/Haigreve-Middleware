@@ -212,3 +212,4 @@ TEXT_CSV = 'text/csv'
 CSV_FILENAME = 'Report.csv'
 CSV_ATTACHMENT = 'attachment'
 CONTENT_DISPOSITION = "Content-Disposition"
+THRESHOLD_VALUE = 15
