@@ -124,6 +124,5 @@ def update_user_subscription_status():
             user_details.is_subscribed = is_subscribed
             user_details.is_payment_completed = payment_completed
             db.session.commit()
-            db.session.close()
         return jsonify({MESSAGE: STATUS_UPDATED})
     return make_response(jsonify({MESSAGE: TRANSACTION_ERROR}), ZIMPERIUM_DEACTIVATION_RESPONSE_CODE_NOT_FOUND)
